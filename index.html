@@ -442,7 +442,9 @@ align-items: center;
     <script>
        document.querySelector('#HomeBtn').classList.toggle('sel');
 
-        document.getElementById("exploreBtn").addEventListener("click", function() {try{
+        document.getElementById("exploreBtn").addEventListener("click", function() {
+alert("g");
+try{
             let activePage = document.querySelector(".pages.active");
             if (activePage) {
                 activePage.classList.toggle("active");
