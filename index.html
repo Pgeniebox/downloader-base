@@ -14,7 +14,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            pointer-events: none;
         }
 
         body {
@@ -34,7 +33,7 @@ overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 5vmin;
+            padding: 6vmin;
             justify-items: center;
             justify-content: center;
             transition: width 0.2s ease-in-out;
@@ -318,8 +317,8 @@ align-items: center;
 </amp-ad>
     <!-- Sidebar -->
     <div class="sidebar entry">
-        <div class="button"  id="HomeBtn"><img src="/logos/home.png"  alt="Home">Home</div>
-        <div class="button" id="exploreBtn"><img src="/logos/explore.png" alt="Explore">Explore</div>
+        <div class="button"  id="HomeBtn"><img src="//logos/home.png"  alt="Home">Home</div>
+        <div class="button" id="exploreBtn"><img src="./logos/explore.png" alt="Explore">Explore</div>
         <div class="button"  id="subBtn"><img src="/logos/subs.png" alt="Subscribes">Subscribes</div>
         <div class="button"  id="downBtn"><img src="/logos/download.png" alt="Downloads">Downloads</div>
         <div class="button"  id="setBtn"><img src="/logos/settings.png" alt="Settings">Settings</div>
@@ -443,7 +442,7 @@ align-items: center;
        document.querySelector('#HomeBtn').classList.toggle('sel');
 
         document.getElementById("exploreBtn").addEventListener("focus", function() {
-alert("g");
+window.alert("g");
 try{
             let activePage = document.querySelector(".pages.active");
             if (activePage) {
