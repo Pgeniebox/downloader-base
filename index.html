@@ -442,12 +442,12 @@ align-items: center;
     <script>
        document.querySelector('#HomeBtn').classList.toggle('sel');
 
-        document.getElementById("exploreBtn").addEventListener("click", function() {
+        document.getElementById("exploreBtn").addEventListener("click", function() {try{
             let activePage = document.querySelector(".pages.active");
             if (activePage) {
-                activePage.classList.remove("active");
-            }
-            document.getElementById("exploreContent").classList.add("active");
+                activePage.classList.toggle("active");
+         }catch(g){alert(g)}   }
+            document.getElementById("exploreContent").classList.toggle("active");
         });
 
         document.getElementById("subBtn").addEventListener("click", function() {
@@ -533,12 +533,8 @@ switch(e.code){
              $('.sidebar')[0].style.width = "10vw";
                     break;
                 case "Enter": case e.keyCode==13:
-var event = new MouseEvent('click', {
-        view: window,
-        bubbles: true,
-        cancelable: true
-    });
-    $('.sidebar .foc:not(.sel)')[0].dispatchEvent(event);
+var event = new 
+    $('.sidebar .foc:not(.sel)')[0].click();
                 $('.sel')[0].classList.toggle('sel');
                 $('.sidebar .foc')[0].classList.toggle('sel');
                 break;
