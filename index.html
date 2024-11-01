@@ -343,7 +343,7 @@ align-items: center;
                 <div class="category-title">Today</div>
                 <div class="video-list entry">
                     <div class="video-card">Video 1 <div class="channel-info">
-            <span class="channel-name">Channel Name</span>
+            <div class="channel-name">Channel Name</div>
              
         </div>
                     <div class="v-details">
@@ -359,12 +359,12 @@ align-items: center;
                 <div class="category-title">Yesterday</div>
                 <div class="video-list entry">
                     <div class="video-card">Video 1 <div class="channel-info">
-                        <span class="channel-name">Channel Name</span>
+                        <div class="channel-name">Channel Name</div>
                          
                     </div>
                                 <div class="v-details">
                                   <div class="info">
-                    <h3 class="title">Video Title</h3>
+                    <div class="title">Video Title</div>
                    <div class="views">1M visits</div>
                 </div>
                                 </div>
@@ -398,12 +398,12 @@ align-items: center;
             <div class="category-title">Today</div>
             <div class="video-list entry">
                 <div class="video-card">Video 1 <div class="channel-info">
-                    <span class="channel-name">Channel Name</span>
+                    <div class="channel-name">Channel Name</div>
                      
                 </div>
                             <div class="v-details">
                               <div class="info">
-                <h3 class="title">Video Title</h3>
+                <div class="title">Video Title</div>
                <div class="views">1M visits</div>
             </div>
                             </div></div>
@@ -474,6 +474,8 @@ align-items: center;
         });
        var ctx="sidebar"
         document.addEventListener("keydown",e=>{
+            //console.log("Key:", e.key, "KeyCode:", e.keyCode);
+e.preventDefault();
 switch(ctx){
 case "sidebar":
 switch(e.code){
@@ -528,7 +530,8 @@ switch(e.code){
              });
              $('.sidebar')[0].style.width = "10vw";
                     break;
-                case "Enter":
+                case "Enter": case e.keyCode==13:
+
                 $('.sidebar .foc:not(.sel)')[0].click();
                 $('.sel')[0].classList.toggle('sel');
                 $('.sidebar .foc')[0].classList.toggle('sel');
