@@ -14,6 +14,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            pointer-events: none;
         }
 
         body {
@@ -36,10 +37,10 @@ overflow: hidden;
             padding: 20px;
             justify-items: center;
             justify-content: center;
-            transition: all 0.2s ease-in-out;
+            transition: width 0.2s ease-in-out;
         }
 
-        .sidebar button {
+        .sidebar .button {
             height: 10vh;
             flex-wrap: nowrap;
             display: flex;
@@ -52,7 +53,7 @@ overflow: hidden;
             color: #ffffff;
             font-size: 4vmin;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: box-shadow 0.2s ease-in-out;
             overflow: hidden;
             gap: 5%;
             align-items: center;
@@ -60,7 +61,7 @@ overflow: hidden;
             justify-content: center;
             justify-items: center;
         }
-        .sidebar button img {
+        .sidebar .button img {
             width: calc(4vh);
             display: none;
         }
@@ -248,9 +249,9 @@ caret-color: transparent;
 }
 
 .entry > *{
-    transition: all 0.2s ease-in-out;
+    transition: box-shadow 0.2s ease-in-out;
 }
-button.sel{
+.button.sel{
     background-color: #3B82F6;
 }
 *.foc{
@@ -280,8 +281,9 @@ justify-content: space-between;
    border-radius: 1vmin;
 }
 .downFile > img.foc{
-    background-color: #e6e6e62c;
+    background-color: #000000;
     box-shadow: 0 0 0 0;
+    filter: invert(1);
 }
 .pagehead{
     margin-bottom: 3vh;
@@ -316,11 +318,11 @@ align-items: center;
 </amp-ad>
     <!-- Sidebar -->
     <div class="sidebar entry">
-        <button id="HomeBtn"><img src="/logos/home.png"  alt="Home">Home</button>
-        <button id="exploreBtn"><img src="/logos/explore.png" alt="Explore">Explore</button>
-        <button id="subBtn"><img src="/logos/subs.png" alt="Subscribes">Subscribes</button>
-        <button id="downBtn"><img src="/logos/download.png" alt="Downloads">Downloads</button>
-        <button id="setBtn"><img src="/logos/settings.png" alt="Settings">Settings</button>
+        <div class="button"  id="HomeBtn"><img src="/logos/home.png"  alt="Home">Home</div>
+        <div class="button" id="exploreBtn"><img src="/logos/explore.png" alt="Explore">Explore</div>
+        <div class="button"  id="subBtn"><img src="/logos/subs.png" alt="Subscribes">Subscribes</div>
+        <div class="button"  id="downBtn"><img src="/logos/download.png" alt="Downloads">Downloads</div>
+        <div class="button"  id="setBtn"><img src="/logos/settings.png" alt="Settings">Settings</div>
 
     </div>
 
@@ -430,7 +432,7 @@ align-items: center;
         </div>
     </div>
     <div class="pages active" id="downContent">
-        <div class="pagehead">Downloads <button class="removeAll">Remove All</button></div>
+        <div class="pagehead">Downloads <div class="removeAll button">Remove All</div></div>
         <div class="downContent entry"> 
            <div class="downFile">file.apk <img src="/logos/trash.png" alt=""></div>
         </div>
@@ -578,6 +580,7 @@ if(g==null){
         $('.sel0 > .sel1')[0].classList.toggle('foc');
     }
                 }
+
                 break;
                 case "ArrowLeft":
 const u = $('.pages.active .sel0 > *').index($('.foc'));
@@ -587,7 +590,7 @@ if(u==0){
     $('.sidebar .sel')[0].classList.toggle('foc');
     ctx = "sidebar";
 
-    document.querySelectorAll('.sidebar > button').forEach((el)=>{
+    document.querySelectorAll('.sidebar > .button').forEach((el)=>{
         el.appendChild(document.createTextNode(el.children[0].alt));
 
 el.children[0].style.display = "none";
@@ -601,31 +604,49 @@ $('.sidebar')[0].style.width = "30vw";
         case "Home":case "Downloads":
 switch(e.code){
 case "ArrowDown":
-    const y = $('.pages.active .foc')[0]
-if(y.nextElementSibling){
+    const y = $('.pages.active .sel0 .foc')[0]
+if(y!=null && y.nextElementSibling !=null){
     y.nextElementSibling.classList.toggle('foc');
     y.nextElementSibling.classList.toggle('sel1');
     y.classList.toggle('foc');
     y.classList.toggle('sel1');
+    return;
+}
+const ii = $('.pages.active button.removeAll.foc')[0];
+if(ii!=null){
+    $('.pages.active .sel0 >*')[0].classList.toggle('foc');
+    ii.classList.toggle('foc');
 }
 break;
 case "ArrowUp":
-const yy = $('.pages.active .foc')[0]
-if(yy.previousElementSibling){
+const yy = $('.pages.active .sel0 >.foc')[0];
+if(yy!=null && yy.previousElementSibling){
     yy.previousElementSibling.classList.toggle('foc');
     yy.previousElementSibling.classList.toggle('sel1');
     yy.classList.toggle('foc');
     yy.classList.toggle('sel1');
+    return;
+}
+const hh = $('.pages.active .button.removeAll:not(.foc)')[0];
+if(hh!=null){
+   try{ $('.pages.active .sel0 .foc')[0].classList.toggle('foc');}catch(e){}
+    hh.classList.toggle('foc');
 }
 break;
 case "ArrowLeft":
-    $('.pages.active .foc')[0].classList.toggle('foc');
+    if($('.pages.active .sel1 .foc')[0]!=null){
+        $('.pages.active .sel1 .foc')[0].classList.toggle('foc');
+        $('.pages.active .sel1')[0].classList.toggle('foc');
+return;
+    }
+
+   try{ $('.pages.active .foc')[0].classList.toggle('foc');}catch(e){}
     $('.pages.active .sel0')[0].classList.toggle('sel0');
 
     $('.sidebar .sel')[0].classList.toggle('foc');
 
     ctx = "sidebar"
-    document.querySelectorAll('.sidebar > button').forEach((el)=>{
+    document.querySelectorAll('.sidebar > .button').forEach((el)=>{
         el.appendChild(document.createTextNode(el.children[0].alt));
 
 el.children[0].style.display = "none";
@@ -635,10 +656,10 @@ el.children[0].style.display = "none";
 $('.sidebar')[0].style.width = "30vw";
 break;
 case "ArrowRight":
-
-    $('.sel0 .foc')[0].children[0].classList.toggle('foc');
-    $('.sel0 .foc')[0].classList.toggle('foc');
-
+if($('.pages.active .sel0 .foc')[0]==null||$('.pages.active .sel0 >.sel1 .foc')[0]!=null){return;}
+    $('.sel0 >.foc')[0].children[0].classList.toggle('foc');
+    $('.sel0 >.foc')[0].classList.toggle('foc');
+    
 break;
 }
         break;
