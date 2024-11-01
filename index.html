@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="plugins/jquery.nav.min.js"></script>
+    <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+
+        <title>Android TV Web App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            color: #fff;
+            /*background-color: #121212;*/
+                background: linear-gradient(to bottom, rgb(12, 24, 51),rgb(0, 0, 0));
+overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+           width: 30vw;
+            background-color: #1f1f1f73;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            justify-items: center;
+            justify-content: center;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .sidebar button {
+            height: 10vh;
+            flex-wrap: nowrap;
+            display: flex;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #6e6e6e17;
+            border: none;
+            border-radius: 16px;
+            color: #ffffff;
+            font-size: 4vmin;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            overflow: hidden;
+            gap: 5%;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            justify-items: center;
+        }
+        .sidebar button img {
+            width: calc(4vh);
+            display: none;
+        }
+      
+        /* Main Content Area */
+        .main-content {
+            width: 85%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Set to column for stacking categories */
+            height: 100%;
+            overflow: hidden; /* Ensure scrolling if content overflows */
+        }
+
+        .pages {
+            left:0;
+            position: relative;
+            width:100%;
+            height: 100%;
+            padding: 5%;
+            overflow-y: auto;
+            display: none; /* Hidden initially */
+        }
+
+        .pages.active {   
+            display: block;     
+        }
+        .pages::-webkit-scrollbar {
+    display: none; /* This hides the scrollbar */
+}
+        .category-section {
+            margin-bottom: 30px;
+
+        }
+        
+        .category-title {
+            font-size: 4vmin;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #DDD;
+        }
+
+        /* List Layout */
+        .video-list {
+            display: flex;
+            gap: 10px;
+            overflow: auto;
+            height:40vh;
+            padding: 15px;
+        }
+      
+        .channel-list {
+            display: flex;
+            gap: 10px;
+            overflow: auto;
+            padding-bottom: 10px;
+            height:fit-content;
+            padding: 15px;
+            
+        }
+       
+        .channel-list::-webkit-scrollbar {
+    display: none; /* This hides the scrollbar */
+}
+        /* Video Card Placeholder */
+        .video-card {
+            width: 20vw;
+            height: 28vh;
+            background-color: #333;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #888;
+            font-size: 3vmin;
+            cursor: pointer;
+        }
+
+       
+
+        .channel-card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #888;
+            font-size: 2vmin;
+            cursor: pointer;
+            width: 6vw;
+            height: calc(6vw);
+border-radius: 100%;
+            background-color: #333;
+        }
+        .v-details{
+          width:100%;
+          height: 10vh;
+          bottom: -10vh;
+          position: absolute;
+          
+          display:block;
+        }
+        .info {
+    padding: 15px; /* Padding around the info */
+}
+
+.title {
+    font-size: 2.5vmin; /* Title font size */
+    font-weight: bold; /* Bold title */
+    margin: 0px 0; /* Margin around title */
+    color: white;
+}
+
+.views {
+    font-size: 2vmin; /* Views font size */
+    color: #6d6d6d; /* Views color */
+}
+
+.channel-info {
+  left:0;
+  position: absolute;
+  bottom:0;
+  width:100%;
+  height: 30%;
+    display: flex; /* Flexbox for channel info */
+    align-items: end; /* Center vertically */
+    padding :15px;
+   /* background: linear-gradient(to top, black,transparent);*/
+    border-radius: 0 0 8px 8px;
+    justify-items: center;
+align-content:end;}
+
+.channel-logo {
+    width: 4vw; /* Channel logo size */
+    height:calc(4vw); /* Channel logo size */
+    border-radius: 50%; /* Circular logo */
+    margin-right: 5px; /* Space between logo and name */
+    border:1px solid darkgrey;
+object-fit:fill;
+}
+
+.channel-name {
+    background-color: rgba(0, 0, 0, 0.295);
+    font-size: 2vmin; /* Channel name font size */
+    color: #b8b8b8; /* Channel name color */
+    padding: 5px;
+    border-radius: 0.5vmin;
+}
+input{
+
+}
+.search{
+    width: 60%;
+    height: 10vh;
+    background-color: #6d6d6d3d;
+    border-radius: 1vmin;
+    outline-width: 0;
+    border: none;
+    color: white;
+    font-size: calc(4vh);
+padding: 2vmin;
+caret-color: transparent;
+}
+
+
+.searchContent{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    align-content: center;
+    justify-items: center;
+    flex-wrap: wrap;
+    gap: 5vh;
+}
+
+.entry{
+    filter: brightness(0.6);
+
+}
+.entry.sel0{
+    filter: brightness(1);
+
+}
+
+.entry > *{
+    transition: all 0.2s ease-in-out;
+}
+button.sel{
+    background-color: #3B82F6;
+}
+*.foc{
+    box-shadow: 0 0 0 0.5vmin white;
+}
+
+.downFile{
+    display: flex;
+    width: 100%;
+    height: 10vh;
+    pointer-events: none;
+    background-color: #6d6d6d3d;
+    border-radius: 1vmin;
+    outline-width: 0;
+    border: none;
+    color: white;
+    font-size: calc(4vh);
+padding: 2vmin;
+align-items: center;
+align-content: center;
+justify-content: space-between; 
+
+}
+.downFile > img{
+    width:calc(4vh);
+   padding: 0.3vmin;
+   border-radius: 1vmin;
+}
+.downFile > img.foc{
+    background-color: #e6e6e62c;
+    box-shadow: 0 0 0 0;
+}
+.pagehead{
+    margin-bottom: 3vh;
+font-size: 5vmin;
+color: white;
+height:fit-content;
+display: flex;
+width: 100%;
+justify-items: end; 
+justify-content: space-between; 
+align-items: center;
+}
+.removeAll{
+    position: relative;
+    background-color: #6d6d6d3d;
+    border: none;
+    color: white;
+    padding: 2vmin 3vmin 2vmin 3vmin;
+    border-radius: 15vmin;
+    font-size: 2vmin;
+}
+    </style>
+</head>
+<body>
+    <amp-ad width="100vw" height="320"
+     type="adsense"
+     data-ad-client="ca-pub-8309032365622750"
+     data-ad-slot="6453579974"
+     data-auto-format="rspv"
+     data-full-width="">
+  <div overflow=""></div>
+</amp-ad>
+    <!-- Sidebar -->
+    <div class="sidebar entry">
+        <button id="HomeBtn"><img src="/logos/home.png"  alt="Home">Home</button>
+        <button id="exploreBtn"><img src="/logos/explore.png" alt="Explore">Explore</button>
+        <button id="subBtn"><img src="/logos/subs.png" alt="Subscribes">Subscribes</button>
+        <button id="downBtn"><img src="/logos/download.png" alt="Downloads">Downloads</button>
+        <button id="setBtn"><img src="/logos/settings.png" alt="Settings">Settings</button>
+
+    </div>
+
+    <!-- Main Content Area for Explore -->
+    <div class="main-content">
+        <div class="pages" id="homeContent">
+            <div class="searchContent entry"> 
+            <input class="search ci" type="text" placeholder="Enter Creator Id">
+
+            <input class="search cn" type="text" placeholder="Enter Creator Name">
+            <input class="search ai"  type="text" placeholder="Enter Application Id">
+            <input class="search an" type="text" placeholder="Enter Application Name">
+        </div>
+       
+</div>
+        <div class="pages" id="exploreContent">
+            <div class="category-section">
+                <div class="category-title">Today</div>
+                <div class="video-list entry">
+                    <div class="video-card">Video 1 <div class="channel-info">
+            <span class="channel-name">Channel Name</span>
+             
+        </div>
+                    <div class="v-details">
+                      <div class="info">
+        <h3 class="title">Video Title</h3>
+       <div class="views">1M visits</div>
+    </div>
+                    </div></div>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <div class="category-title">Yesterday</div>
+                <div class="video-list entry">
+                    <div class="video-card">Video 1 <div class="channel-info">
+                        <span class="channel-name">Channel Name</span>
+                         
+                    </div>
+                                <div class="v-details">
+                                  <div class="info">
+                    <h3 class="title">Video Title</h3>
+                   <div class="views">1M visits</div>
+                </div>
+                                </div>
+                </div>
+            </div>
+
+          
+        </div>
+        <div class="category-section">
+            <div class="category-title">This Week</div>
+            <div class="video-list entry">
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-title">This Month</div>
+            <div class="video-list entry">
+            </div>
+        </div>
+      
+    </div>
+    <div class="pages" id="subContent">
+        <div class="category-section">
+            <div class="channel-list entry">
+                <div class="channel-card">Channel 1</div>
+                <div class="channel-card">Channel 2</div>
+                <div class="channel-card">Channel 3</div>
+            </div>
+        </div>
+        <div class="category-section">
+            <div class="category-title">Today</div>
+            <div class="video-list entry">
+                <div class="video-card">Video 1 <div class="channel-info">
+                    <span class="channel-name">Channel Name</span>
+                     
+                </div>
+                            <div class="v-details">
+                              <div class="info">
+                <h3 class="title">Video Title</h3>
+               <div class="views">1M visits</div>
+            </div>
+                            </div></div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-title">Yesterday</div>
+            <div class="video-list entry">
+            
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-title">This Week</div>
+            <div class="video-list entry">
+          
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-title">This Month</div>
+            <div class="video-list entry">
+              
+            </div>
+        </div>
+    </div>
+    <div class="pages active" id="downContent">
+        <div class="pagehead">Downloads <button class="removeAll">Remove All</button></div>
+        <div class="downContent entry"> 
+           <div class="downFile">file.apk <img src="/logos/trash.png" alt=""></div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+       document.querySelector('#HomeBtn').classList.toggle('sel');
+
+        document.getElementById("exploreBtn").addEventListener("click", function() {
+            let activePage = document.querySelector(".pages.active");
+            if (activePage) {
+                activePage.classList.remove("active");
+            }
+            document.getElementById("exploreContent").classList.add("active");
+        });
+
+        document.getElementById("subBtn").addEventListener("click", function() {
+            let activePage = document.querySelector(".pages.active");
+            if (activePage) {
+                activePage.classList.remove("active");
+            }
+            document.getElementById("subContent").classList.add("active");
+        });
+        
+        document.getElementById("HomeBtn").addEventListener("click", function() {
+            let activePage = document.querySelector(".pages.active");
+            if (activePage) {
+                activePage.classList.remove("active");
+            }
+            document.getElementById("homeContent").classList.add("active");
+        });
+        document.getElementById("downBtn").addEventListener("click", function() {
+            let activePage = document.querySelector(".pages.active");
+            if (activePage) {
+                activePage.classList.remove("active");
+            }
+            document.getElementById("downContent").classList.add("active");
+        });
+       var ctx="sidebar"
+        document.addEventListener("keydown",e=>{
+switch(ctx){
+case "sidebar":
+switch(e.code){
+                case "ArrowDown":
+                //$('.entry .sel')[0].classList.toggle('sel');
+                const q=$('.sidebar .foc')[0];
+                if(q!=null){
+                    q.classList.toggle('foc');
+                    if(q.nextElementSibling!=null){
+                        q.nextElementSibling.classList.toggle('foc');
+                    }else{
+                        $('.sel')[0].parentElement.children[0].classList.toggle('foc');
+                    }
+                }else{
+                    $('.sel')[0].parentElement.children[0].classList.toggle('foc');
+
+                }
+                break
+                case "ArrowUp":
+                const a=$('.sidebar .foc')[0];
+                if(a!=null){
+                    a.classList.toggle('foc');
+                    if(a.previousElementSibling!=null){
+                        a.previousElementSibling.classList.toggle('foc');
+                    }else{
+                        $('.sel')[0].parentElement.children[$('.sel')[0].parentElement.children.length-1].classList.toggle('foc');
+                    }
+                }else{
+                    $('.sel')[0].parentElement.children[$('.sel')[0].parentElement.children.length-1].classList.toggle('foc');
+
+                }
+                break
+                case "ArrowRight":
+                    const check = $('.pages.active .act .sel1')[0]||$('.pages.active .sel1')[0];
+                    if (check==null){
+
+                $(".pages.active  .entry")[0].classList.toggle("sel0");
+               try{ $('.sidebar .foc')[0].classList.toggle('foc');}catch(e){}
+           $(".sel0 >*")[0].classList.toggle('foc');
+           $('.sel0 .foc')[0].classList.toggle('sel1');
+        } else {
+            try{ $('.sidebar .foc')[0].classList.toggle('foc');}catch(e){}
+               
+              check.parentElement.classList.toggle('sel0');
+             check.classList.toggle('foc');
+              }
+              ctx=$('.sel')[0].children[0].alt;
+
+             document.querySelectorAll('.sidebar > *').forEach(el=>{
+                el.children[0].style.display = "block";
+                el.childNodes[1].remove();
+             });
+             $('.sidebar')[0].style.width = "10vw";
+                    break;
+                case "Enter":
+                $('.sidebar .foc:not(.sel)')[0].click();
+                $('.sel')[0].classList.toggle('sel');
+                $('.sidebar .foc')[0].classList.toggle('sel');
+                break;
+            }
+    break;
+    case "Explore":case "Subscribes":
+        switch(e.code){
+            case "ArrowDown":
+            const kolElements = $('.pages.active .entry');
+const h = kolElements.index($('.sel0'));
+const f = h < kolElements.length - 1 ? kolElements.eq(h + 1) : null;
+ if(f[0]!=null&&f[0].children.length>0){
+    $('.sel0 .foc')[0].classList.toggle('foc');
+if($('.sel0.act')[0]!=null){
+    $('.sel0.act')[0].classList.toggle('act')
+}
+$('.sel0')[0].classList.toggle('sel0');
+
+f[0].classList.toggle('sel0');
+f[0].classList.toggle('act');
+const g = $('.sel0 .sel1')[0];
+if(g==null){
+    try{
+    $('.sel0 >*')[0].classList.toggle('foc');
+    $('.sel0 >*')[0].classList.toggle('sel1');}catch(e){}
+}else{
+    $('.sel0 > .sel1')[0].classList.toggle('foc');
+}
+
+}
+            break;
+            case "ArrowUp":
+            const flopIndex = $('.pages.active .entry').index($('.sel0'));
+            const j = flopIndex > 0 ? $('.pages.active .entry').eq(flopIndex - 1) : null;
+                if(j!=null){
+                    $('.sel0 .foc')[0].classList.toggle('foc');
+                    if($('.sel0.act')[0]!=null){
+    $('.sel0.act')[0].classList.toggle('act')
+}
+                    $('.sel0')[0].classList.toggle('sel0');
+                    j[0].classList.toggle('act');
+
+                    j[0].classList.toggle('sel0');
+                    const g = $('.sel0 .sel1')[0];
+                    if(g==null){try{
+    $('.sel0 >*')[0].classList.toggle('foc');
+    $('.sel0 >*')[0].classList.toggle('sel1');}catch(e){}}else{
+        $('.sel0 > .sel1')[0].classList.toggle('foc');
+    }
+                }
+                break;
+                case "ArrowLeft":
+const u = $('.pages.active .sel0 > *').index($('.foc'));
+if(u==0){
+    $('.sel0 .foc')[0].classList.toggle('foc');
+    $('.sel0')[0].classList.toggle('sel0');
+    $('.sidebar .sel')[0].classList.toggle('foc');
+    ctx = "sidebar";
+
+    document.querySelectorAll('.sidebar > button').forEach((el)=>{
+        el.appendChild(document.createTextNode(el.children[0].alt));
+
+el.children[0].style.display = "none";
+
+
+});
+$('.sidebar')[0].style.width = "30vw";
+}
+    break;
+        }
+        case "Home":case "Downloads":
+switch(e.code){
+case "ArrowDown":
+    const y = $('.pages.active .foc')[0]
+if(y.nextElementSibling){
+    y.nextElementSibling.classList.toggle('foc');
+    y.nextElementSibling.classList.toggle('sel1');
+    y.classList.toggle('foc');
+    y.classList.toggle('sel1');
+}
+break;
+case "ArrowUp":
+const yy = $('.pages.active .foc')[0]
+if(yy.previousElementSibling){
+    yy.previousElementSibling.classList.toggle('foc');
+    yy.previousElementSibling.classList.toggle('sel1');
+    yy.classList.toggle('foc');
+    yy.classList.toggle('sel1');
+}
+break;
+case "ArrowLeft":
+    $('.pages.active .foc')[0].classList.toggle('foc');
+    $('.pages.active .sel0')[0].classList.toggle('sel0');
+
+    $('.sidebar .sel')[0].classList.toggle('foc');
+
+    ctx = "sidebar"
+    document.querySelectorAll('.sidebar > button').forEach((el)=>{
+        el.appendChild(document.createTextNode(el.children[0].alt));
+
+el.children[0].style.display = "none";
+
+
+});
+$('.sidebar')[0].style.width = "30vw";
+break;
+case "ArrowRight":
+
+    $('.sel0 .foc')[0].children[0].classList.toggle('foc');
+    $('.sel0 .foc')[0].classList.toggle('foc');
+
+break;
+}
+        break;
+
+}
+           
+        });
+//document.querySelector('#HomeBtn').click();
+
+    </script>
+    
+</body>
+</html>
