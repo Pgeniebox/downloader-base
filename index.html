@@ -440,9 +440,9 @@ align-items: center;
     </div>
 
     <script>
-       //document.querySelector('#HomeBtn').classList.toggle('sel');
+       document.querySelector('#HomeBtn').classList.toggle('sel');
 
-        document.getElementById("exploreBtn").addEventListener("click", function() {
+        document.getElementById("exploreBtn").addEventListener("focus", function() {
 alert("g");
 try{
             let activePage = document.querySelector(".pages.active");
@@ -453,7 +453,7 @@ try{
  }catch(g){alert(g)} 
         });
 
-        document.getElementById("subBtn").addEventListener("click", function() {
+        document.getElementById("subBtn").addEventListener("focus", function() {
             let activePage = document.querySelector(".pages.active");
             if (activePage) {
                 activePage.classList.remove("active");
@@ -537,7 +537,7 @@ switch(e.code){
                     break;
                 case "Enter": case e.keyCode==13:
 var event = new 
-    $('.sidebar .foc:not(.sel)')[0].click();
+    $('.sidebar .foc:not(.sel)')[0].focus();
                 $('.sel')[0].classList.toggle('sel');
                 $('.sidebar .foc')[0].classList.toggle('sel');
                 break;
