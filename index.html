@@ -491,12 +491,12 @@ align-items: center;
         });
        var ctx="sidebar"
         document.addEventListener("keydown",e=>{
-alert(e.code);
+
 e.preventDefault();
 switch(ctx){
 case "sidebar":
-switch(e.code){
-                case "ArrowDown":
+switch(e.keyCode){
+                case 40:
                 //$('.entry .sel')[0].classList.toggle('sel');
                 const q=$('.sidebar .foc')[0];
                 if(q!=null){
@@ -511,7 +511,7 @@ switch(e.code){
 
                 }
                 break
-                case "ArrowUp":
+                case 38:
                 const a=$('.sidebar .foc')[0];
                 if(a!=null){
                     a.classList.toggle('foc');
@@ -525,7 +525,7 @@ switch(e.code){
 
                 }
                 break;
-                case "ArrowRight":
+                case 39:
                     const check = $('.pages.active .act .sel1')[0]||$('.pages.active .sel1')[0];
                     if (check==null){
 
@@ -547,8 +547,8 @@ switch(e.code){
              });
              $('.sidebar')[0].style.width = "10vw";
                     break;
-                case "Enter": 
-                alert('t');
+                case 13: 
+                
                 $('.sel')[0].classList.toggle('sel');
                 $('.sidebar .foc')[0].classList.toggle('sel');
                 let activePage = document.querySelector(".pages.active");
