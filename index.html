@@ -15,6 +15,10 @@
             padding: 0;
             box-sizing: border-box;
             pointer-events: none;
+            -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+
         }
 
         body {
@@ -34,7 +38,7 @@ overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 6vmin;
+            padding: 20px;
             justify-items: center;
             justify-content: center;
             transition: width 0.1s ease-in-out;
@@ -49,8 +53,8 @@ overflow: hidden;
             width: 100%;
             max-height: calc(6vw);
             padding: 15px;
-            margin: 10px 0;
-            background-color: #6e6e6e17;
+            margin: 10px;
+            background-color: #6e6e6e44;
             border: none;
             border-radius: 16px;
             color: #ffffff;
@@ -331,11 +335,11 @@ align-items: center;
 </amp-ad>
     <!-- Sidebar -->
     <div class="sidebar entry">
-        <div class="button"  id="HomeBtn"><img src="/logos/home.png"  alt="Home">Home</div>
-        <div class="button" id="exploreBtn"><img src="/logos/explore.png" alt="Explore">Explore</div>
-        <div class="button"  id="subBtn"><img src="/logos/subs.png" alt="Subscribes">Subscribes</div>
-        <div class="button"  id="downBtn"><img src="/logos/download.png" alt="Downloads">Downloads</div>
-        <div class="button"  id="setBtn"><img src="/logos/settings.png" alt="Settings">Settings</div>
+        <div class="button" data-page="homeContent" id="HomeBtn"><img src="./logos/home.png"  alt="Home">Home</div>
+        <div class="button" data-page="exploreContent" id="exploreBtn"><img src="./logos/explore.png" alt="Explore">Explore</div>
+        <div class="button" data-page="subContent" id="subBtn"><img src="./logos/subs.png" alt="Subscribes">Subscribes</div>
+        <div class="button" data-page="downContent" id="downBtn"><img src="./logos/download.png" alt="Downloads">Downloads</div>
+        <div class="button" data-page="homeContent" id="setBtn"><img src="./logos/settings.png" alt="Settings">Settings</div>
 
     </div>
 
@@ -455,18 +459,15 @@ align-items: center;
     <script>
        document.querySelector('#HomeBtn').classList.toggle('sel');
 
-        document.getElementById("exploreBtn").addEventListener("focus", function() {
-window.alert("g");
-try{
+        document.getElementById("exploreBtn").addEventListener("click", function() {
             let activePage = document.querySelector(".pages.active");
             if (activePage) {
-                activePage.classList.toggle("active");
-          }
-            document.getElementById("exploreContent").classList.toggle("active");
- }catch(g){alert(g)} 
+                activePage.classList.remove("active");
+            }
+            document.getElementById("exploreContent").classList.add("active");
         });
 
-        document.getElementById("subBtn").addEventListener("focus", function() {
+        document.getElementById("subBtn").addEventListener("click", function() {
             let activePage = document.querySelector(".pages.active");
             if (activePage) {
                 activePage.classList.remove("active");
@@ -491,8 +492,6 @@ try{
        var ctx="sidebar"
         document.addEventListener("keydown",e=>{
             //console.log("Key:", e.key, "KeyCode:", e.keyCode);
-
-//alert(e.keyCode,e.key);
 e.preventDefault();
 switch(ctx){
 case "sidebar":
@@ -548,9 +547,8 @@ switch(e.code){
              });
              $('.sidebar')[0].style.width = "10vw";
                     break;
-                case "Enter": case e.keyCode==13:
-
-                $('.sidebar .foc:not(.sel)')[0].click();
+                case "Enter": 
+                
                 $('.sel')[0].classList.toggle('sel');
                 $('.sidebar .foc')[0].classList.toggle('sel');
                 let activePage = document.querySelector(".pages.active");
