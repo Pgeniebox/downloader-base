@@ -15,6 +15,10 @@
             padding: 0;
             box-sizing: border-box;
             pointer-events: none;
+            -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+
         }
 
         body {
@@ -37,7 +41,9 @@ overflow: hidden;
             padding: 20px;
             justify-items: center;
             justify-content: center;
-            transition: width 0.2s ease-in-out;
+            transition: width 0.1s ease-in-out;
+            will-change:width;
+
         }
 
         .sidebar .button {
@@ -45,15 +51,18 @@ overflow: hidden;
             flex-wrap: nowrap;
             display: flex;
             width: 100%;
+            max-height: calc(6vw);
             padding: 15px;
-            margin: 10px 0;
-            background-color: #6e6e6e17;
+            margin: 10px;
+            background-color: #6e6e6e44;
             border: none;
             border-radius: 16px;
             color: #ffffff;
             font-size: 4vmin;
             cursor: pointer;
-            transition: box-shadow 0.2s ease-in-out;
+            transition: box-shadow 0.1s ease-in-out;
+            will-change:box-shadow;
+
             overflow: hidden;
             gap: 5%;
             align-items: center;
@@ -249,7 +258,9 @@ caret-color: transparent;
 }
 
 .entry > *{
-    transition: box-shadow 0.2s ease-in-out;
+    transition: box-shadow 0.1s ease-in-out;
+    will-change:box-shadow;
+
 }
 .button.sel{
     background-color: #3B82F6;
@@ -296,6 +307,7 @@ justify-items: end;
 justify-content: space-between; 
 align-items: center;
 }
+
 .removeAll{
     position: relative;
     background-color: #6d6d6d3d;
@@ -304,6 +316,11 @@ align-items: center;
     padding: 2vmin 3vmin 2vmin 3vmin;
     border-radius: 15vmin;
     font-size: 2vmin;
+}
+.removeAll.foc{
+    background-color: #000000;
+    box-shadow: 0 0 0 0;
+    filter: invert(1);
 }
     </style>
 </head>
@@ -318,11 +335,11 @@ align-items: center;
 </amp-ad>
     <!-- Sidebar -->
     <div class="sidebar entry">
-        <div class="button"  id="HomeBtn"><img src="/logos/home.png"  alt="Home">Home</div>
-        <div class="button" id="exploreBtn"><img src="/logos/explore.png" alt="Explore">Explore</div>
-        <div class="button"  id="subBtn"><img src="/logos/subs.png" alt="Subscribes">Subscribes</div>
-        <div class="button"  id="downBtn"><img src="/logos/download.png" alt="Downloads">Downloads</div>
-        <div class="button"  id="setBtn"><img src="/logos/settings.png" alt="Settings">Settings</div>
+        <div class="button" data-page="homeContent" id="HomeBtn"><img src="./logos/home.png"  alt="Home">Home</div>
+        <div class="button" data-page="exploreContent" id="exploreBtn"><img src="./logos/explore.png" alt="Explore">Explore</div>
+        <div class="button" data-page="subContent" id="subBtn"><img src="./logos/subs.png" alt="Subscribes">Subscribes</div>
+        <div class="button" data-page="downContent" id="downBtn"><img src="./logos/download.png" alt="Downloads">Downloads</div>
+        <div class="button" data-page="homeContent" id="setBtn"><img src="./logos/settings.png" alt="Settings">Settings</div>
 
     </div>
 
@@ -434,7 +451,7 @@ align-items: center;
     <div class="pages active" id="downContent">
         <div class="pagehead">Downloads <div class="removeAll button">Remove All</div></div>
         <div class="downContent entry"> 
-           <div class="downFile">file.apk <img src="/logos/trash.png" alt=""></div>
+           <div class="downFile">file.apk <img src="./logos/trash.png" alt=""></div>
         </div>
     </div>
     </div>
@@ -507,7 +524,7 @@ switch(e.code){
                     $('.sel')[0].parentElement.children[$('.sel')[0].parentElement.children.length-1].classList.toggle('foc');
 
                 }
-                break
+                break;
                 case "ArrowRight":
                     const check = $('.pages.active .act .sel1')[0]||$('.pages.active .sel1')[0];
                     if (check==null){
@@ -530,11 +547,16 @@ switch(e.code){
              });
              $('.sidebar')[0].style.width = "10vw";
                     break;
-                case "Enter": case e.keyCode==13:
-
-                $('.sidebar .foc:not(.sel)')[0].click();
+                case "Enter": 
+                
                 $('.sel')[0].classList.toggle('sel');
                 $('.sidebar .foc')[0].classList.toggle('sel');
+                let activePage = document.querySelector(".pages.active");
+            if (activePage) {
+                activePage.classList.remove("active");
+            }
+
+            document.getElementById($('.sidebar .sel')[0].dataset.page).classList.toggle("active");
                 break;
             }
     break;
@@ -604,6 +626,7 @@ $('.sidebar')[0].style.width = "30vw";
 }
     break;
         }
+        break;
         case "Home":case "Downloads":
 switch(e.code){
 case "ArrowDown":
@@ -615,7 +638,7 @@ if(y!=null && y.nextElementSibling !=null){
     y.classList.toggle('sel1');
     return;
 }
-const ii = $('.pages.active button.removeAll.foc')[0];
+const ii = $('.pages.active .button.removeAll.foc')[0];
 if(ii!=null){
     $('.pages.active .sel0 >*')[0].classList.toggle('foc');
     ii.classList.toggle('foc');
@@ -660,8 +683,8 @@ $('.sidebar')[0].style.width = "30vw";
 break;
 case "ArrowRight":
 if($('.pages.active .sel0 .foc')[0]==null||$('.pages.active .sel0 >.sel1 .foc')[0]!=null){return;}
-    $('.sel0 >.foc')[0].children[0].classList.toggle('foc');
-    $('.sel0 >.foc')[0].classList.toggle('foc');
+    $('.pages.active .sel0 >.foc')[0].children[0].classList.toggle('foc');
+    $('.pages.active .sel0 >.foc')[0].classList.toggle('foc');
     
 break;
 }
