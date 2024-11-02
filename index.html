@@ -561,8 +561,8 @@ switch(e.keyCode){
             }
     break;
     case "Explore":case "Subscribes":
-        switch(e.code){
-            case "ArrowDown":
+        switch(e.keyCode){
+            case 40:
             const kolElements = $('.pages.active .entry');
 const h = kolElements.index($('.sel0'));
 const f = h < kolElements.length - 1 ? kolElements.eq(h + 1) : null;
@@ -586,7 +586,7 @@ if(g==null){
 
 }
             break;
-            case "ArrowUp":
+            case 38:
             const flopIndex = $('.pages.active .entry').index($('.sel0'));
             const j = flopIndex > 0 ? $('.pages.active .entry').eq(flopIndex - 1) : null;
                 if(j!=null){
@@ -607,7 +607,7 @@ if(g==null){
                 }
 
                 break;
-                case "ArrowLeft":
+                case 37:
 const u = $('.pages.active .sel0 > *').index($('.foc'));
 if(u==0){
     $('.sel0 .foc')[0].classList.toggle('foc');
@@ -628,8 +628,8 @@ $('.sidebar')[0].style.width = "30vw";
         }
         break;
         case "Home":case "Downloads":
-switch(e.code){
-case "ArrowDown":
+switch(e.keyCode){
+case 40:
     const y = $('.pages.active .sel0 .foc')[0]
 if(y!=null && y.nextElementSibling !=null){
     y.nextElementSibling.classList.toggle('foc');
@@ -644,7 +644,7 @@ if(ii!=null){
     ii.classList.toggle('foc');
 }
 break;
-case "ArrowUp":
+case 38:
 const yy = $('.pages.active .sel0 >.foc')[0];
 if(yy!=null && yy.previousElementSibling){
     yy.previousElementSibling.classList.toggle('foc');
@@ -659,7 +659,7 @@ if(hh!=null){
     hh.classList.toggle('foc');
 }
 break;
-case "ArrowLeft":
+case 37:
     if($('.pages.active .sel1 .foc')[0]!=null){
         $('.pages.active .sel1 .foc')[0].classList.toggle('foc');
         $('.pages.active .sel1')[0].classList.toggle('foc');
@@ -681,7 +681,7 @@ el.children[0].style.display = "none";
 });
 $('.sidebar')[0].style.width = "30vw";
 break;
-case "ArrowRight":
+case 39:
 if($('.pages.active .sel0 .foc')[0]==null||$('.pages.active .sel0 >.sel1 .foc')[0]!=null){return;}
     $('.pages.active .sel0 >.foc')[0].children[0].classList.toggle('foc');
     $('.pages.active .sel0 >.foc')[0].classList.toggle('foc');
