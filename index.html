@@ -41,7 +41,7 @@ overflow: hidden;
             padding: 20px;
             justify-items: center;
             justify-content: center;
-            transition: width 0.1s ease-in-out;
+            transition: width 0.05s ease-in-out;
             will-change:width;
 
         }
@@ -51,16 +51,18 @@ overflow: hidden;
             flex-wrap: nowrap;
             display: flex;
             width: 100%;
-            max-height: calc(6vw);
-            padding: 15px;
+aspect-ratio: 1/1;         
+   padding: 15px;
             margin: 10px;
+            margin-left: 5vmin;
+            margin-right: 5vmin;
             background-color: #6e6e6e44;
             border: none;
             border-radius: 16px;
             color: #ffffff;
             font-size: 4vmin;
             cursor: pointer;
-            transition: box-shadow 0.1s ease-in-out;
+            transition: box-shadow 0.05s ease-in-out;
             will-change:box-shadow;
 
             overflow: hidden;
@@ -159,8 +161,10 @@ overflow: hidden;
             color: #888;
             font-size: 2vmin;
             cursor: pointer;
-            width: 6vw;
-            height: calc(6vw);
+            max-width: 6vw;
+            max-height: calc(6vw);
+            min-width: 6vw;
+            min-height: calc(6vw);
 border-radius: 100%;
             background-color: #333;
         }
@@ -274,7 +278,7 @@ caret-color: transparent;
     width: 100%;
     height: 10vh;
     pointer-events: none;
-    background-color: #6d6d6d3d;
+    background-color: #6d6d6d28;
     border-radius: 1vmin;
     outline-width: 0;
     border: none;
@@ -316,6 +320,7 @@ align-items: center;
     padding: 2vmin 3vmin 2vmin 3vmin;
     border-radius: 15vmin;
     font-size: 2vmin;
+    font-weight: 600;
 }
 .removeAll.foc{
     background-color: #000000;
